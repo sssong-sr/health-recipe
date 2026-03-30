@@ -1,0 +1,183 @@
+<!--pages/recipes/recipes.wxml-->
+<wxs module="filters" src="../../utils/filters.wxs"></wxs>
+
+<view class="container">
+
+  <!-- 头部 -->
+  <view class="header card">
+    <view class="header-top">
+      <view class="welcome">
+        <text class="welcome-icon">🍽️</text>
+        <view class="welcome-text">
+          <text class="title">今日推荐</text>
+          <text class="subtitle">为你精选健康菜谱</text>
+        </view>
+      </view>
+      <view class="header-actions">
+        <view class="action-btn" bindtap="goToCollections">
+          <text>❤️</text>
+        </view>
+        <view class="action-btn" bindtap="goToMyMenu">
+          <text>📋</text>
+        </view>
+      </view>
+    </view>
+    <view class="target-info">
+      <view class="target-item">
+        <text class="target-label">目标</text>
+        <text class="target-value">{{userGoal}}</text>
+      </view>
+      <view class="target-item">
+        <text class="target-label">热量目标</text>
+        <text class="target-value">{{targetCal}} kcal</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 筛选区域 -->
+  <view class="filter-section card">
+    <view class="filter-group">
+      <text class="filter-label">时段</text>
+      <view class="filter-options">
+        <view 
+          wx:for="{{mealTypes}}" 
+          wx:key="value"
+          class="filter-tag {{filters.includes(selectedMealTypes, item.value) ? 'active' : ''}}"
+          bindtap="onMealTypeChange"
+          data-value="{{item.value}}"
+        >{{item.name}}</view>
+      </view>
+    </view>
+    
+    <view class="filter-group">
+      <text class="filter-label">目标</text>
+      <view class="filter-options">
+        <view 
+          wx:for="{{goalOptions}}" 
+          wx:key="value"
+          class="filter-tag {{filters.includes(selectedGoals, item.value) ? 'active' : ''}}"
+          bindtap="onGoalChange"
+          data-value="{{item.value}}"
+        >{{item.name}}</view>
+      </view>
+    </view>
+
+    <view class="search-box">
+      <input 
+        class="search-input" 
+        type="text" 
+        placeholder="搜索菜谱名称或食材"
+        value="{{searchKeyword}}"
+        bindinput="onSearchInput"
+      />
+      <text class="search-icon">🔍</text>
+    </view>
+  </view>
+
+  <!-- 菜谱列表 -->
+  <view class="recipes-section">
+    <block wx:if="{{filteredRecipes.length > 0}}">
+      <view class="recipes-grid">
+        <view 
+          wx:for="{{filteredRecipes}}" 
+          wx:key="_id"
+          class="recipe-card"
+        >
+          <!-- 菜谱图片 -->
+          <view class="recipe-image-wrapper" bindtap="goToRecipeDetail" data-id="{{item._id}}">
+            <image 
+              class="recipe-image" 
+              src="{{item.image}}" 
+              mode="aspectFill"
+              lazy-load="true"
+            />
+            <view class="recipe-cal-badge">
+              <text class="cal-value">{{item.total_cal}}</text>
+              <text class="cal-unit">kcal</text>
+            </view>
+            <!-- 已选标记 -->
+            <view wx:if="{{filters.includes(selectedRecipeIds, item._id)}}" class="recipe-selected-mark">
+              <text>✓</text>
+            </view>
+          </view>
+          
+          <!-- 菜谱信息 -->
+          <view class="recipe-info" bindtap="goToRecipeDetail" data-id="{{item._id}}">
+            <text class="recipe-name">{{item.name}}</text>
+            <text class="recipe-meta">{{item.difficulty}} · {{item.time}}分钟</text>
+            <view class="recipe-tags">
+              <view 
+                wx:for="{{item.tags}}" 
+                wx:key="*this"
+                wx:if="{{index < 2}}"
+                class="tag"
+              >{{item}}</view>
+            </view>
+          </view>
+
+          <!-- 操作按钮 -->
+          <view class="card-btns">
+            <button 
+              class="btn-card {{filters.includes(selectedRecipeIds, item._id) ? 'btn-added' : 'btn-add'}}"
+              catchtap="quickAddToMenu"
+              data-recipe="{{item}}"
+            >{{filters.includes(selectedRecipeIds, item._id) ? '✓ 已选' : '+ 菜单'}}</button>
+            <button 
+              class="btn-card {{filters.includes(collectionIds, item._id) ? 'btn-collected' : 'btn-collect'}}"
+              catchtap="quickCollect"
+              data-recipe="{{item}}"
+            >{{filters.includes(collectionIds, item._id) ? '❤️' : '🤍'}}</button>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="empty-state">
+        <text class="empty-icon">🍽️</text>
+        <text class="empty-text">暂无菜谱</text>
+        <text class="empty-hint">调整筛选条件试试</text>
+      </view>
+    </block>
+  </view>
+
+  <!-- 底部菜单统计 -->
+  <view class="menu-stats-section card">
+    <view class="stats-header">
+      <text class="stats-title">📊 今日菜单</text>
+      <text class="stats-count">已选 {{selectedRecipeIds.length}} 道</text>
+    </view>
+    
+    <view class="stats-content">
+      <view class="stats-item">
+        <view class="stats-label">
+          <text>总热量</text>
+          <text class="stats-value">{{totalCalories}} / {{targetCal}} kcal</text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill" style="width: {{totalCalories > 0 ? (totalCalories / targetCal * 100 > 100 ? 100 : totalCalories / targetCal * 100) : 0}}%"></view>
+        </view>
+      </view>
+      
+      <view class="nutrition-grid">
+        <view class="nutrition-item">
+          <text class="nutrition-label">蛋白质</text>
+          <text class="nutrition-value">{{totalProtein}}g</text>
+        </view>
+        <view class="nutrition-item">
+          <text class="nutrition-label">碳水</text>
+          <text class="nutrition-value">{{totalCarbs}}g</text>
+        </view>
+        <view class="nutrition-item">
+          <text class="nutrition-label">脂肪</text>
+          <text class="nutrition-value">{{totalFat}}g</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="stats-actions" wx:if="{{selectedRecipeIds.length > 0}}">
+      <button class="btn-secondary" bindtap="clearMenu">清空菜单</button>
+      <button class="btn-primary" bindtap="viewMenuDetail">查看详细</button>
+    </view>
+  </view>
+
+</view>

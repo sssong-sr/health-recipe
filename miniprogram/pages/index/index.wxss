@@ -1,0 +1,604 @@
+/* pages/index/index.wxss */
+
+/* 授权弹窗 */
+.auth-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.auth-content {
+  width: 600rpx;
+  background: #FFF;
+  border-radius: 24rpx;
+  padding: 60rpx 40rpx;
+  text-align: center;
+}
+
+.auth-icon {
+  font-size: 80rpx;
+  margin-bottom: 24rpx;
+}
+
+.auth-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 16rpx;
+}
+
+.auth-desc {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 40rpx;
+  line-height: 1.6;
+}
+
+.auth-btn {
+  width: 100%;
+  height: 88rpx;
+  line-height: 88rpx;
+  background: #07C160;
+  color: #FFF;
+  font-size: 32rpx;
+  border-radius: 44rpx;
+  border: none;
+}
+
+.auth-btn::after {
+  border: none;
+}
+
+/* 头部 */
+.header {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #07C160 0%, #06AD56 100%);
+  color: #FFF;
+}
+
+.header-avatar-btn {
+  width: 64rpx !important;
+  height: 64rpx !important;
+  padding: 0 !important;
+  margin: 0 16rpx 0 0 !important;
+  border-radius: 50% !important;
+  background: rgba(255,255,255,0.2) !important;
+  border: none !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.header-avatar-btn::after {
+  border: none !important;
+}
+
+.header-avatar-img {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: 50%;
+}
+
+.header-avatar-text {
+  font-size: 32rpx;
+}
+
+.welcome-text .title {
+  color: #FFF;
+  font-size: 36rpx;
+}
+
+.welcome-text .subtitle {
+  display: block;
+  font-size: 26rpx;
+  opacity: 0.9;
+  margin-top: 8rpx;
+}
+
+/* 结果卡片 */
+.result-card {
+  background: #FFF;
+}
+
+.result-title {
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 24rpx;
+}
+
+.result-grid {
+  display: flex;
+  justify-content: space-between;
+}
+
+.result-item {
+  flex: 1;
+  text-align: center;
+}
+
+.result-item.highlight .result-num {
+  color: #07C160;
+}
+
+.result-num {
+  display: block;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.result-label {
+  display: block;
+  font-size: 22rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.result-tip {
+  text-align: center;
+  margin-top: 24rpx;
+  padding-top: 24rpx;
+  border-top: 1rpx solid #EEE;
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* BMI 卡片 */
+.bmi-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.card-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.bmi-row {
+  display: flex;
+  align-items: center;
+  gap: 30rpx;
+}
+
+.bmi-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bmi-circle {
+  width: 130rpx;
+  height: 130rpx;
+  border-radius: 50%;
+  border: 6rpx solid #07C160;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.bmi-num {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.bmi-label {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.bmi-status {
+  font-size: 24rpx;
+  font-weight: 500;
+  margin-top: 10rpx;
+}
+
+.weight-targets {
+  flex: 1;
+}
+
+.weight-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10rpx 0;
+}
+
+.weight-label {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.weight-value {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.highlight-text {
+  color: #07C160;
+}
+
+/* 记录体重区域 */
+.record-weight-section {
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx dashed #EEE;
+}
+
+.record-weight-row {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+}
+
+.record-label {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.weight-input {
+  width: 120rpx;
+  height: 60rpx;
+  background: #F5F5F5;
+  border-radius: 8rpx;
+  padding: 0 16rpx;
+  font-size: 28rpx;
+  text-align: center;
+}
+
+.btn-confirm-small {
+  background: #07C160;
+  color: #FFF;
+  font-size: 24rpx;
+  padding: 10rpx 24rpx;
+  border-radius: 8rpx;
+  line-height: 1.4;
+}
+
+.btn-confirm-small:active {
+  opacity: 0.8;
+}
+
+/* 图表卡片 */
+.chart-card {
+  padding-bottom: 20rpx;
+}
+
+.chart-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.chart-tabs {
+  display: flex;
+  gap: 8rpx;
+}
+
+.chart-tab {
+  padding: 6rpx 16rpx;
+  font-size: 22rpx;
+  color: #999;
+  background: #F5F5F5;
+  border-radius: 16rpx;
+}
+
+.chart-tab.active {
+  color: #FFF;
+  background: #07C160;
+}
+
+/* 图表区域 */
+.chart-area {
+  min-height: 350rpx;
+  display: flex;
+  flex-direction: column;
+}
+
+.weight-chart-canvas {
+  width: 100%;
+  height: 350rpx;
+  display: block;
+}
+
+/* 空状态 */
+.chart-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 60rpx 0;
+}
+
+.chart-empty-icon {
+  font-size: 80rpx;
+  opacity: 0.5;
+}
+
+.chart-empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-top: 16rpx;
+}
+
+.chart-empty-hint {
+  font-size: 24rpx;
+  color: #CCC;
+  margin-top: 8rpx;
+}
+
+/* 心情卡片 */
+.mood-card .card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.mood-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.mood-options {
+  display: flex;
+  justify-content: space-between;
+  gap: 12rpx;
+}
+
+.mood-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16rpx 8rpx;
+  border-radius: 12rpx;
+  background: #F8F8F8;
+  transition: all 0.2s;
+}
+
+.mood-item.active {
+  background: #E8F7EA;
+}
+
+.mood-emoji {
+  font-size: 40rpx;
+}
+
+.mood-name {
+  font-size: 20rpx;
+  color: #666;
+  margin-top: 6rpx;
+}
+
+.mood-item.active .mood-name {
+  color: #07C160;
+  font-weight: 500;
+}
+
+/* 心情历史 */
+.mood-history {
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx dashed #EEE;
+}
+
+.mood-history-title {
+  font-size: 26rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.mood-history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.mood-history-item {
+  display: flex;
+  align-items: center;
+  padding: 10rpx 16rpx;
+  background: #FAFAFA;
+  border-radius: 8rpx;
+}
+
+.mood-history-emoji {
+  font-size: 28rpx;
+  margin-right: 12rpx;
+}
+
+.mood-history-name {
+  font-size: 24rpx;
+  color: #333;
+  flex: 1;
+}
+
+.mood-history-date {
+  font-size: 22rpx;
+  color: #999;
+}
+
+/* 操作按钮 */
+.action-btns {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 24rpx;
+  padding-bottom: 30rpx;
+}
+
+.btn-primary {
+  flex: 1;
+  background: #07C160;
+  color: #FFF;
+  border-radius: 44rpx;
+  padding: 24rpx 0;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+.btn-secondary {
+  flex: 1;
+  background: #FFF;
+  border: 2rpx solid #07C160;
+  color: #07C160;
+  border-radius: 44rpx;
+  padding: 24rpx 0;
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+/* 目标选择 */
+.goal-options {
+  display: flex;
+  gap: 16rpx;
+}
+
+.goal-item {
+  flex: 1;
+  padding: 24rpx 0;
+  text-align: center;
+  border: 2rpx solid #EEE;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.goal-item.active {
+  border-color: #07C160;
+  background: #E8F7EA;
+  color: #07C160;
+  font-weight: 600;
+}
+
+/* 表单 */
+.form-row {
+  margin-bottom: 20rpx;
+}
+
+.form-row:last-child {
+  margin-bottom: 0;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+}
+
+.form-label {
+  width: 100rpx;
+  color: #666;
+  font-size: 28rpx;
+}
+
+.form-input {
+  flex: 1;
+  height: 80rpx;
+  background: #F5F5F5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+}
+
+.form-unit {
+  margin-left: 16rpx;
+  color: #999;
+}
+
+/* 性别选择 */
+.gender-select {
+  display: flex;
+  gap: 16rpx;
+}
+
+.gender-item {
+  padding: 14rpx 28rpx;
+  border: 2rpx solid #EEE;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #666;
+}
+
+.gender-item.active {
+  border-color: #07C160;
+  background: #E8F7EA;
+  color: #07C160;
+}
+
+/* 运动强度 */
+.exercise-slider {
+  padding: 20rpx 0;
+}
+
+.exercise-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16rpx;
+  font-size: 20rpx;
+  color: #999;
+}
+
+.save-btn {
+  margin-top: 40rpx;
+}
+
+/* AI入口卡片 */
+.ai-entry-card {
+  background: linear-gradient(135deg, #E8F7EA 0%, #D4F5D9 100%);
+  border: 2rpx solid #07C160;
+}
+
+.ai-entry-content {
+  display: flex;
+  align-items: center;
+}
+
+.ai-entry-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background: #07C160;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.ai-entry-text {
+  flex: 1;
+}
+
+.ai-entry-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 4rpx;
+}
+
+.ai-entry-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+}
+
+.ai-entry-arrow {
+  font-size: 32rpx;
+  color: #07C160;
+}

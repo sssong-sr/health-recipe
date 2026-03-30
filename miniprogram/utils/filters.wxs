@@ -1,0 +1,27 @@
+// utils/filters.wxs - WXS 过滤器
+module.exports = {
+  // 判断数组是否包含某个值
+  includes: function(array, value) {
+    if (!array) return false
+    for (var i = 0; i < array.length; i++) {
+      if (array[i] === value) return true
+    }
+    return false
+  },
+  
+  // 判断数组是否包含任意一个值
+  includesAny: function(array, values) {
+    if (!array || !values) return false
+    for (var i = 0; i < values.length; i++) {
+      for (var j = 0; j < array.length; j++) {
+        if (array[j] === values[i]) return true
+      }
+    }
+    return false
+  },
+  
+  // 四舍五入取整
+  round: function(num) {
+    return Math.round(num)
+  }
+}

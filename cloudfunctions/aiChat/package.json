@@ -1,0 +1,10 @@
+{
+  "name": "aiChat",
+  "version": "1.0.0",
+  "description": "AI体重管理对话 - DeepSeek API版本",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest",
+    "axios": "^1.6.0"
+  }
+}

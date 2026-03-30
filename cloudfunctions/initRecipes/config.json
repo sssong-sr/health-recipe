@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "openapi": [
+      "cloud.CloudID"
+    ]
+  },
+  "triggers": {}
+}

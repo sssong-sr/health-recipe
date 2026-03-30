@@ -1,0 +1,67 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+  
+  <!-- 打卡成就 -->
+  <view class="card achievements">
+    <view class="title">🏆 打卡成就</view>
+    <view class="achievements-grid">
+      <view class="achievement-item">
+        <text class="num">{{checkin.total_days}}</text>
+        <text class="label">总天数</text>
+      </view>
+      <view class="achievement-item">
+        <text class="num highlight">{{checkin.streak}}</text>
+        <text class="label">连续天数</text>
+      </view>
+      <view class="achievement-item" bindtap="showBadges">
+        <text class="num">{{checkin.badges.length || 0}}</text>
+        <text class="label">徽章</text>
+      </view>
+    </view>
+    <view class="badges" wx:if="{{checkin.badges.length > 0}}">
+      <text class="badge" wx:for="{{checkin.badges}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 每日鼓励 -->
+  <view class="card encouragement">
+    <text class="msg">❤️ {{dailyMsg}}</text>
+  </view>
+
+  <!-- 通知设置 -->
+  <view class="card">
+    <view class="title">🔔 通知设置</view>
+    <view class="setting-item">
+      <text class="label">每日7点推送食谱</text>
+      <switch 
+        checked="{{subscribeEnabled}}" 
+        color="#07C160"
+        bindchange="onToggleSubscribe"
+      />
+    </view>
+    <view class="setting-item" wx:if="{{subscribeEnabled}}">
+      <text class="label">推送时间</text>
+      <picker mode="time" value="{{pushTime}}" bindchange="onTimeChange">
+        <text class="value">{{pushTime}}</text>
+      </picker>
+    </view>
+  </view>
+
+  <!-- 打卡按钮 -->
+  <view class="checkin-section">
+    <button 
+      class="btn-checkin {{todayCheckin ? 'checked' : ''}}" 
+      bindtap="doCheckin"
+      disabled="{{todayCheckin}}"
+    >
+      {{todayCheckin ? '✓ 今日已打卡' : '📅 今日打卡'}}
+    </button>
+  </view>
+
+  <!-- 未完善档案提示 -->
+  <view wx:if="{{!hasProfile}}" class="tip-card">
+    <text>请先在首页完善档案，了解你的基础代谢～</text>
+    <button size="mini" bindtap="goToIndex">去完善</button>
+  </view>
+
+</view>

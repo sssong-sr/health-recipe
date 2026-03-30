@@ -1,0 +1,39 @@
+<!--pages/ai-history/ai-history.wxml-->
+<view class="container">
+
+  <!-- 会话列表 -->
+  <block wx:if="{{sessions.length > 0}}">
+    <view class="session-list">
+      <view 
+        class="session-item" 
+        wx:for="{{sessions}}" 
+        wx:key="_id"
+        bindtap="openSession"
+        data-id="{{item._id}}"
+      >
+        <view class="session-icon">💬</view>
+        <view class="session-content">
+          <view class="session-title">{{item.title || '新对话'}}</view>
+          <view class="session-info">
+            <text class="session-time">{{item.last_time_str}}</text>
+            <text class="session-count">{{item.message_count}}条消息</text>
+          </view>
+          <view class="session-preview">{{item.last_message}}</view>
+        </view>
+        <view class="session-actions">
+          <button class="delete-btn" catchtap="deleteSession" data-id="{{item._id}}">删除</button>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 空状态 -->
+  <block wx:else>
+    <view class="empty-state">
+      <text class="empty-icon">💬</text>
+      <text class="empty-text">暂无历史对话</text>
+      <button class="start-btn" bindtap="startNew">开始新对话</button>
+    </view>
+  </block>
+
+</view>

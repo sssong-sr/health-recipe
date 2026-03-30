@@ -1,0 +1,157 @@
+<!--pages/recipe-detail/recipe-detail.wxml-->
+<view class="container">
+
+  <!-- 菜谱大图 -->
+  <view class="recipe-header">
+    <image 
+      class="recipe-image" 
+      src="{{recipe.image}}" 
+      mode="aspectFill"
+    />
+    <view class="recipe-overlay">
+      <view class="recipe-cal-large">
+        <text class="cal-num">{{recipe.total_cal}}</text>
+        <text class="cal-unit">kcal</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜谱基本信息 -->
+  <view class="recipe-info-card card">
+    <view class="recipe-title">{{recipe.name}}</view>
+    
+    <view class="recipe-meta-grid">
+      <view class="meta-item">
+        <text class="meta-icon">⚡</text>
+        <text class="meta-label">难度</text>
+        <text class="meta-value">{{recipe.difficulty}}</text>
+      </view>
+      <view class="meta-item">
+        <text class="meta-icon">⏱️</text>
+        <text class="meta-label">时间</text>
+        <text class="meta-value">{{recipe.time}}分钟</text>
+      </view>
+      <view class="meta-item">
+        <text class="meta-icon">🍽️</text>
+        <text class="meta-label">份数</text>
+        <text class="meta-value">{{recipe.servings}}人份</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 食材清单 -->
+  <view class="section card">
+    <view class="section-header" bindtap="toggleIngredients">
+      <text class="section-title">📋 食材清单</text>
+      <text class="section-toggle">{{showIngredients ? '▼' : '▶'}}</text>
+    </view>
+    
+    <view class="section-content" wx:if="{{showIngredients}}">
+      <view wx:for="{{recipe.ingredients}}" wx:key="*this" class="ingredient-item">
+        <view class="ingredient-info">
+          <text class="ingredient-name">{{item.name}}</text>
+          <text class="ingredient-amount">{{item.amount}} {{item.unit}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 烹饪步骤 -->
+  <view class="section card">
+    <view class="section-header" bindtap="toggleSteps">
+      <text class="section-title">👨‍🍳 烹饪步骤</text>
+      <text class="section-toggle">{{showSteps ? '▼' : '▶'}}</text>
+    </view>
+    
+    <view class="section-content" wx:if="{{showSteps}}">
+      <view wx:for="{{recipe.steps}}" wx:key="step" class="step-item">
+        <view class="step-number">{{item.step}}</view>
+        <view class="step-content">
+          <text class="step-description">{{item.description}}</text>
+          <image 
+            wx:if="{{item.image}}" 
+            class="step-image" 
+            src="{{item.image}}" 
+            mode="aspectFill"
+          />
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 营养信息 -->
+  <view class="section card">
+    <view class="section-header" bindtap="toggleNutrition">
+      <text class="section-title">💡 营养信息</text>
+      <text class="section-toggle">{{showNutrition ? '▼' : '▶'}}</text>
+    </view>
+    
+    <view class="section-content" wx:if="{{showNutrition}}">
+      <view class="nutrition-bars">
+        <view class="nutrition-bar">
+          <view class="nutrition-bar-label">
+            <text>蛋白质</text>
+            <text class="nutrition-bar-value">{{recipe.nutrition.protein}}g</text>
+          </view>
+          <view class="nutrition-bar-track">
+            <view class="nutrition-bar-fill protein" style="width: {{(recipe.nutrition.protein / 50) * 100}}%"></view>
+          </view>
+        </view>
+        
+        <view class="nutrition-bar">
+          <view class="nutrition-bar-label">
+            <text>碳水化合物</text>
+            <text class="nutrition-bar-value">{{recipe.nutrition.carbs}}g</text>
+          </view>
+          <view class="nutrition-bar-track">
+            <view class="nutrition-bar-fill carbs" style="width: {{(recipe.nutrition.carbs / 100) * 100}}%"></view>
+          </view>
+        </view>
+        
+        <view class="nutrition-bar">
+          <view class="nutrition-bar-label">
+            <text>脂肪</text>
+            <text class="nutrition-bar-value">{{recipe.nutrition.fat}}g</text>
+          </view>
+          <view class="nutrition-bar-track">
+            <view class="nutrition-bar-fill fat" style="width: {{(recipe.nutrition.fat / 50) * 100}}%"></view>
+          </view>
+        </view>
+        
+        <view class="nutrition-bar">
+          <view class="nutrition-bar-label">
+            <text>纤维素</text>
+            <text class="nutrition-bar-value">{{recipe.nutrition.fiber}}g</text>
+          </view>
+          <view class="nutrition-bar-track">
+            <view class="nutrition-bar-fill fiber" style="width: {{(recipe.nutrition.fiber / 10) * 100}}%"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 标签 -->
+  <view class="tags-section card">
+    <view class="tags-title">标签</view>
+    <view class="tags-list">
+      <view wx:for="{{recipe.tags}}" wx:key="*this" class="tag">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 底部操作按钮 -->
+  <view class="action-buttons">
+    <button class="btn-secondary" bindtap="goToCollections">
+      ❤️ 我的收藏
+    </button>
+    <button class="btn-primary" bindtap="addToMenu">
+      {{isInMenu ? '✓ 已加入菜单' : '加入今日菜单'}}
+    </button>
+  </view>
+  
+  <!-- 跳转到我的菜单 -->
+  <view class="menu-link">
+    <button class="btn-menu-link" bindtap="goToMyMenu">📋 查看我的菜单</button>
+  </view>
+
+</view>

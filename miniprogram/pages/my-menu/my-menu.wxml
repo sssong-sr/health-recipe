@@ -1,0 +1,98 @@
+<!--pages/my-menu/my-menu.wxml-->
+<view class="container">
+
+  <!-- 统计卡片 -->
+  <view class="stats-card card">
+    <view class="stats-header">
+      <text class="stats-title">📊 今日菜单统计</text>
+      <text class="stats-date">{{today}}</text>
+    </view>
+    
+    <view class="stats-content">
+      <!-- 热量进度 -->
+      <view class="stats-item">
+        <view class="stats-label">
+          <text>总热量</text>
+          <text class="stats-value">{{totalCalories}} / {{targetCal}} kcal</text>
+        </view>
+        <view class="progress-bar">
+          <view class="progress-fill {{calorieProgress >= 100 ? 'over' : ''}}" style="width: {{calorieProgress > 100 ? 100 : calorieProgress}}%"></view>
+        </view>
+        <text class="stats-tip" wx:if="{{calorieProgress >= 100}}">⚠️ 已超过目标热量</text>
+        <text class="stats-tip" wx:elif="{{calorieProgress >= 80}}">💪 接近目标，继续加油</text>
+        <text class="stats-tip" wx:else>🎯 还差 {{targetCal - totalCalories}} kcal</text>
+      </view>
+      
+      <!-- 营养信息 -->
+      <view class="nutrition-section">
+        <text class="section-title">营养摄入</text>
+        <view class="nutrition-grid">
+          <view class="nutrition-item">
+            <view class="nutrition-icon protein">🥩</view>
+            <text class="nutrition-label">蛋白质</text>
+            <text class="nutrition-value">{{totalProtein}}g</text>
+          </view>
+          <view class="nutrition-item">
+            <view class="nutrition-icon carbs">🍞</view>
+            <text class="nutrition-label">碳水</text>
+            <text class="nutrition-value">{{totalCarbs}}g</text>
+          </view>
+          <view class="nutrition-item">
+            <view class="nutrition-icon fat">🥑</view>
+            <text class="nutrition-label">脂肪</text>
+            <text class="nutrition-value">{{totalFat}}g</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 菜谱列表 -->
+  <view class="menu-section">
+    <view class="section-header">
+      <text class="section-title">🍽️ 今日菜谱</text>
+      <text class="section-count">共 {{menuItems.length}} 道</text>
+    </view>
+    
+    <block wx:if="{{menuItems.length > 0}}">
+      <view class="menu-list">
+        <view 
+          wx:for="{{menuItems}}" 
+          wx:key="_id"
+          class="menu-item card"
+        >
+          <view class="menu-item-info" bindtap="goToRecipeDetail" data-id="{{item._id}}">
+            <image class="menu-item-image" src="{{item.image}}" mode="aspectFill" />
+            <view class="menu-item-content">
+              <text class="menu-item-name">{{item.name}}</text>
+              <text class="menu-item-meta">{{item.difficulty}} · {{item.time}}分钟</text>
+              <view class="menu-item-tags">
+                <text wx:for="{{item.tags}}" wx:key="*this" wx:if="{{index < 2}}" class="tag-small">{{item}}</text>
+              </view>
+            </view>
+            <view class="menu-item-cal">
+              <text class="cal-number">{{item.total_cal}}</text>
+              <text class="cal-unit">kcal</text>
+            </view>
+          </view>
+          <button class="btn-remove" catchtap="removeFromMenu" data-id="{{item._id}}">移除</button>
+        </view>
+      </view>
+      
+      <!-- 清空按钮 -->
+      <view class="actions-section">
+        <button class="btn-clear" bindtap="clearMenu">清空菜单</button>
+      </view>
+    </block>
+    
+    <block wx:else>
+      <view class="empty-state">
+        <text class="empty-icon">🍽️</text>
+        <text class="empty-text">今日菜单为空</text>
+        <text class="empty-hint">去添加一些美味的菜谱吧</text>
+        <button class="btn-go-recipes" bindtap="goToRecipes">查看菜谱</button>
+      </view>
+    </block>
+  </view>
+
+</view>

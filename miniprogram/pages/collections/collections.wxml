@@ -1,0 +1,73 @@
+<!--pages/collections/collections.wxml-->
+<view class="container">
+
+  <!-- 页面标题 -->
+  <view class="page-header card">
+    <text class="page-title">❤️ 我的收藏</text>
+    <text class="page-count">共 {{collections.length}} 道菜谱</text>
+  </view>
+
+  <!-- 收藏列表 -->
+  <view class="recipes-section">
+    <block wx:if="{{collections.length > 0}}">
+      <view class="recipes-grid">
+        <view 
+          wx:for="{{collections}}" 
+          wx:key="_id"
+          class="recipe-card"
+          bindtap="goToRecipeDetail"
+          data-id="{{item._id}}"
+        >
+          <!-- 菜谱图片 -->
+          <view class="recipe-image-wrapper">
+            <image 
+              class="recipe-image" 
+              src="{{item.image}}" 
+              mode="aspectFill"
+              lazy-load="true"
+            />
+            <!-- 热量显示 -->
+            <view class="recipe-cal-badge">
+              <text class="cal-value">{{item.total_cal}}</text>
+              <text class="cal-unit">kcal</text>
+            </view>
+          </view>
+          
+          <!-- 菜谱信息 -->
+          <view class="recipe-info">
+            <text class="recipe-name">{{item.name}}</text>
+            <text class="recipe-meta">{{item.difficulty}} · {{item.time}}分钟</text>
+            
+            <!-- 标签 -->
+            <view class="recipe-tags">
+              <view 
+                wx:for="{{item.tags}}" 
+                wx:key="*this"
+                wx:if="{{index < 2}}"
+                class="tag"
+              >{{item}}</view>
+            </view>
+          </view>
+
+          <!-- 取消收藏按钮 -->
+          <view class="card-actions">
+            <button 
+              class="btn-uncollect" 
+              catchtap="uncollectRecipe" 
+              data-id="{{item._id}}"
+            >取消收藏</button>
+          </view>
+        </view>
+      </view>
+    </block>
+    <block wx:else>
+      <view class="empty-state">
+        <text class="empty-icon">❤️</text>
+        <text class="empty-text">暂无收藏</text>
+        <text class="empty-hint">去菜谱列表看看有什么好吃的吧</text>
+        <button class="btn-go-recipes" bindtap="goToRecipes">查看菜谱</button>
+      </view>
+    </block>
+  </view>
+
+</view>

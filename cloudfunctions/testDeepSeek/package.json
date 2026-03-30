@@ -1,0 +1,10 @@
+{
+  "name": "testDeepSeek",
+  "version": "1.0.0",
+  "description": "测试 DeepSeek API 连接",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "latest",
+    "axios": "^1.6.0"
+  }
+}

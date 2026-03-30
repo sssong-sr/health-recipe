@@ -1,0 +1,299 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+
+  <!-- 授权弹窗 - 首次使用 -->
+  <view class="auth-dialog" wx:if="{{showAuthDialog}}">
+    <view class="auth-content">
+      <view class="auth-icon">👋</view>
+      <view class="auth-title">欢迎使用健康食谱</view>
+      <view class="auth-desc">点击下方按钮授权头像，让我们更好地为你服务</view>
+      <button 
+        class="auth-btn" 
+        open-type="chooseAvatar" 
+        bindchooseavatar="onChooseAvatar"
+      >授权头像</button>
+    </view>
+  </view>
+
+  <!-- 头部欢迎 -->
+  <view class="header card">
+    <button 
+      class="header-avatar-btn" 
+      open-type="chooseAvatar" 
+      bindchooseavatar="onChooseAvatar"
+    >
+      <image 
+        wx:if="{{userInfo && userInfo.avatarUrl}}"
+        src="{{userInfo.avatarUrl}}" 
+        class="header-avatar-img"
+      ></image>
+      <text wx:else class="header-avatar-text">👤</text>
+    </button>
+    <view class="welcome-text">
+      <text class="title">欢迎使用健康食谱</text>
+      <text class="subtitle">{{hasProfile ? '今日也要好好吃饭呀 💪' : '完善档案开始健康之旅'}}</text>
+    </view>
+  </view>
+
+  <!-- 已填写档案显示结果 -->
+  <block wx:if="{{showResult}}">
+
+    <!-- AI体重管理入口 - 顶部卡片下面 -->
+    <view class="card ai-entry-card" bindtap="goToAIChat">
+      <view class="ai-entry-content">
+        <view class="ai-entry-icon">🤖</view>
+        <view class="ai-entry-text">
+          <text class="ai-entry-title">AI管理体重</text>
+          <text class="ai-entry-desc">智能解答你的体重管理问题</text>
+        </view>
+        <view class="ai-entry-arrow">→</view>
+      </view>
+    </view>
+
+    <!-- 今日数据卡片 -->
+    <view class="card result-card">
+      <view class="result-title">📊 今日数据</view>
+      <view class="result-grid">
+        <view class="result-item">
+          <text class="result-num">{{bmr}}</text>
+          <text class="result-label">基础代谢(kcal)</text>
+        </view>
+        <view class="result-item">
+          <text class="result-num">{{tdee}}</text>
+          <text class="result-label">每日消耗(kcal)</text>
+        </view>
+        <view class="result-item highlight">
+          <text class="result-num">{{targetCal}}</text>
+          <text class="result-label">目标热量(kcal)</text>
+        </view>
+      </view>
+      <view class="result-tip">
+        <text>目标：{{goal}} | 运动：{{exerciseLevel}}倍</text>
+      </view>
+    </view>
+
+    <!-- BMI + 体重目标卡片 -->
+    <view class="card bmi-card">
+      <view class="card-header">
+        <text class="card-title">⚖️ 体重管理</text>
+      </view>
+      <view class="bmi-row">
+        <!-- BMI -->
+        <view class="bmi-block">
+          <view class="bmi-circle" style="border-color: {{bmiStatus.color}}">
+            <text class="bmi-num" style="color: {{bmiStatus.color}}">{{bmi}}</text>
+            <text class="bmi-label">BMI</text>
+          </view>
+          <text class="bmi-status" style="color: {{bmiStatus.color}}">{{bmiStatus.text}}</text>
+        </view>
+        <!-- 体重目标 -->
+        <view class="weight-targets">
+          <view class="weight-row">
+            <text class="weight-label">📌 当前体重</text>
+            <text class="weight-value">{{currentWeight}} kg</text>
+          </view>
+          <view class="weight-row">
+            <text class="weight-label">🎯 目标体重</text>
+            <text class="weight-value highlight-text">{{targetWeight}} kg</text>
+          </view>
+          <view class="weight-row">
+            <text class="weight-label">📏 距离目标</text>
+            <text class="weight-value">{{weightDiff}}</text>
+          </view>
+        </view>
+      </view>
+      <!-- 今日体重记录 - 按钮放在同一行 -->
+      <view class="record-weight-section">
+        <view class="record-weight-row">
+          <text class="record-label">记录体重</text>
+          <input 
+            class="weight-input" 
+            type="digit" 
+            placeholder="kg" 
+            value="{{inputWeight}}"
+            bindinput="onInputWeightRecord"
+          />
+          <button class="btn-confirm-small" bindtap="confirmWeight">确认</button>
+        </view>
+      </view>
+    </view>
+
+    <!-- 体重趋势图 -->
+    <view class="card chart-card">
+      <view class="card-header">
+        <text class="card-title">📈 体重趋势</text>
+        <view class="chart-tabs">
+          <view 
+            wx:for="{{chartDaysOptions}}" 
+            wx:key="value"
+            class="chart-tab {{chartDays === item.value ? 'active' : ''}}"
+            bindtap="onChartDaysChange"
+            data-value="{{index}}"
+          >{{item.name}}</view>
+        </view>
+      </view>
+      
+      <!-- 折线图区域 -->
+      <view class="chart-area">
+        <!-- 空状态优先显示 -->
+        <view class="chart-empty" wx:if="{{!hasWeightData}}">
+          <text class="chart-empty-icon">📉</text>
+          <text class="chart-empty-text">暂无体重记录</text>
+          <text class="chart-empty-hint">在上方记录今日体重开始追踪</text>
+        </view>
+        <!-- canvas 有数据时显示 -->
+        <canvas 
+          wx:if="{{hasWeightData}}"
+          type="2d" 
+          id="weightChart" 
+          class="weight-chart-canvas"
+        ></canvas>
+      </view>
+    </view>
+
+    <!-- 今日心情 -->
+    <view class="card mood-card">
+      <view class="card-header">
+        <text class="card-title">🌈 今日心情</text>
+        <text class="mood-date">{{todayMood ? '已记录' : '还没记录哦'}}</text>
+      </view>
+      <!-- 选择心情 -->
+      <view class="mood-options">
+        <view 
+          wx:for="{{moodOptions}}" 
+          wx:key="value"
+          class="mood-item {{todayMood === item.value ? 'active' : ''}}"
+          bindtap="onRecordMood"
+          data-mood="{{item.value}}"
+        >
+          <text class="mood-emoji">{{item.emoji}}</text>
+          <text class="mood-name">{{item.name}}</text>
+        </view>
+      </view>
+      <!-- 心情历史 -->
+      <view class="mood-history" wx:if="{{moodHistory.length > 0}}">
+        <view class="mood-history-title">📜 最近心情记录</view>
+        <view class="mood-history-list">
+          <view wx:for="{{moodHistory}}" wx:key="date" class="mood-history-item">
+            <text class="mood-history-emoji">{{item.emoji}}</text>
+            <text class="mood-history-name">{{item.moodName}}</text>
+            <text class="mood-history-date">{{item.dateLabel}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="action-btns">
+      <button class="btn-secondary" bindtap="goToCalculator">修改档案</button>
+      <button class="btn-primary" bindtap="goToRecipes">查看今日食谱</button>
+    </view>
+
+  </block>
+
+  <!-- 未填写档案显示表单 -->
+  <block wx:else>
+    <!-- 目标选择 -->
+    <view class="card">
+      <view class="title">我的目标</view>
+      <view class="goal-options">
+        <view 
+          wx:for="{{goalOptions}}" 
+          wx:key="value"
+          class="goal-item {{goal === item.value ? 'active' : ''}}"
+          bindtap="onSelectGoal"
+          data-value="{{item.value}}"
+        >
+          {{item.name}}
+        </view>
+      </view>
+    </view>
+
+    <!-- 身体数据 -->
+    <view class="card">
+      <view class="title">身体数据</view>
+      <view class="form-row">
+        <view class="form-item">
+          <text class="form-label">性别</text>
+          <view class="gender-select">
+            <view 
+              class="gender-item {{gender === 'male' ? 'active' : ''}}"
+              bindtap="onSelectGender"
+              data-value="male"
+            >👨 男</view>
+            <view 
+              class="gender-item {{gender === 'female' ? 'active' : ''}}"
+              bindtap="onSelectGender"
+              data-value="female"
+            >👩 女</view>
+          </view>
+        </view>
+      </view>
+      <view class="form-row">
+        <view class="form-item">
+          <text class="form-label">年龄</text>
+          <input 
+            class="form-input" 
+            type="number" 
+            placeholder="请输入年龄" 
+            value="{{age}}"
+            bindinput="onInputAge"
+          />
+          <text class="form-unit">岁</text>
+        </view>
+      </view>
+      <view class="form-row">
+        <view class="form-item">
+          <text class="form-label">身高</text>
+          <input 
+            class="form-input" 
+            type="number" 
+            placeholder="请输入身高" 
+            value="{{height}}"
+            bindinput="onInputHeight"
+          />
+          <text class="form-unit">cm</text>
+        </view>
+      </view>
+      <view class="form-row">
+        <view class="form-item">
+          <text class="form-label">体重</text>
+          <input 
+            class="form-input" 
+            type="digit" 
+            placeholder="请输入体重" 
+            value="{{weight}}"
+            bindinput="onInputWeight"
+          />
+          <text class="form-unit">kg</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 运动习惯 -->
+    <view class="card">
+      <view class="title">运动习惯</view>
+      <view class="exercise-slider">
+        <slider 
+          min="0" 
+          max="4" 
+          step="1" 
+          value="{{sliderValue}}"
+          block-size="20"
+          block-color="#07C160"
+          activeColor="#07C160"
+          bindchange="onSliderChange"
+        />
+        <view class="exercise-labels">
+          <text wx:for="{{exerciseOptions}}" wx:key="value">{{item.label}}</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 保存按钮 -->
+    <view class="save-btn">
+      <button class="btn-primary" bindtap="saveProfile">立即开启健康饮食</button>
+    </view>
+  </block>
+
+</view>

@@ -1,0 +1,23 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/recipes/recipes",
+    "pages/recipe-detail/recipe-detail",
+    "pages/collections/collections",
+    "pages/my-menu/my-menu",
+    "pages/ai-chat/ai-chat",
+    "pages/ai-history/ai-history",
+    "pages/profile/profile",
+    "pages/calculator/calculator"
+  ],
+  "lazyCodeLoading": "requiredComponents",
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#07C160",
+    "navigationBarTitleText": "健康食谱",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": true
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

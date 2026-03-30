@@ -1,0 +1,106 @@
+<!--pages/calculator/calculator.wxml-->
+<view class="container">
+  <view class="page-title">修改档案</view>
+
+  <!-- 目标选择 -->
+  <view class="card">
+    <view class="title">我的目标</view>
+    <view class="goal-options">
+      <view 
+        wx:for="{{goalOptions}}" 
+        wx:key="value"
+        class="goal-item {{goal === item.value ? 'active' : ''}}"
+        bindtap="onSelectGoal"
+        data-value="{{item.value}}"
+      >
+        {{item.name}}
+      </view>
+    </view>
+  </view>
+
+  <!-- 身体数据 -->
+  <view class="card">
+    <view class="title">身体数据</view>
+    <view class="form-row">
+      <view class="form-item">
+        <text class="form-label">性别</text>
+        <view class="gender-select">
+          <view 
+            class="gender-item {{gender === 'male' ? 'active' : ''}}"
+            bindtap="onSelectGender"
+            data-value="male"
+          >👨 男</view>
+          <view 
+            class="gender-item {{gender === 'female' ? 'active' : ''}}"
+            bindtap="onSelectGender"
+            data-value="female"
+          >👩 女</view>
+        </view>
+      </view>
+    </view>
+    <view class="form-row">
+      <view class="form-item">
+        <text class="form-label">年龄</text>
+        <input 
+          class="form-input" 
+          type="number" 
+          placeholder="请输入年龄" 
+          value="{{age}}"
+          bindinput="onInputAge"
+        />
+        <text class="form-unit">岁</text>
+      </view>
+    </view>
+    <view class="form-row">
+      <view class="form-item">
+        <text class="form-label">身高</text>
+        <input 
+          class="form-input" 
+          type="number" 
+          placeholder="请输入身高" 
+          value="{{height}}"
+          bindinput="onInputHeight"
+        />
+        <text class="form-unit">cm</text>
+      </view>
+    </view>
+    <view class="form-row">
+      <view class="form-item">
+        <text class="form-label">体重</text>
+        <input 
+          class="form-input" 
+          type="digit" 
+          placeholder="请输入体重" 
+          value="{{weight}}"
+          bindinput="onInputWeight"
+        />
+        <text class="form-unit">kg</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 运动习惯 -->
+  <view class="card">
+    <view class="title">运动习惯</view>
+    <view class="exercise-slider">
+      <slider 
+        min="0" 
+        max="4" 
+        step="1" 
+        value="{{sliderValue}}"
+        block-size="20"
+        block-color="#07C160"
+        activeColor="#07C160"
+        bindchange="onSliderChange"
+      />
+      <view class="exercise-labels">
+        <text wx:for="{{exerciseOptions}}" wx:key="value">{{item.label}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-btn">
+    <button class="btn-primary" bindtap="saveProfile">保存修改</button>
+  </view>
+</view>

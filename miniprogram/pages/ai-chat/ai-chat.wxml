@@ -1,0 +1,100 @@
+<!--pages/ai-chat/ai-chat.wxml-->
+<view class="container">
+
+  <!-- 授权弹窗 -->
+  <view class="auth-modal" wx:if="{{showAuthModal}}">
+    <view class="auth-content">
+      <view class="auth-title">欢迎使用体重管理顾问</view>
+      <view class="auth-desc">请授权头像，获得更好体验</view>
+      <button class="auth-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+        授权头像
+      </button>
+      <view class="auth-skip" bindtap="skipAuth">跳过</view>
+    </view>
+  </view>
+
+  <!-- 消息列表 -->
+  <scroll-view 
+    class="message-list" 
+    scroll-y 
+    scroll-into-view="{{scrollToView}}"
+  >
+    <!-- 欢迎消息 -->
+    <view class="message-item assistant" wx:if="{{messages.length === 0}}">
+      <view class="avatar ai-avatar">🤖</view>
+      <view class="message-content">
+        <view class="message-bubble">
+          <text>你好！我是你的体重管理顾问，有什么可以帮你的？</text>
+        </view>
+        <view class="quick-questions">
+          <view class="quick-q" bindtap="sendQuickQuestion" data-q="减脂期间怎么吃？">减脂期间怎么吃？</view>
+          <view class="quick-q" bindtap="sendQuickQuestion" data-q="增肌需要多少蛋白质？">增肌需要多少蛋白质？</view>
+          <view class="quick-q" bindtap="sendQuickQuestion" data-q="如何计算每日热量？">如何计算每日热量？</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 消息列表 -->
+    <block wx:for="{{messages}}" wx:key="_id">
+      <!-- 用户消息 - 头像在右边 -->
+      <view class="message-item user" wx:if="{{item.role === 'user'}}">
+        <view class="message-content">
+          <view class="message-bubble user-bubble">
+            <text>{{item.content}}</text>
+          </view>
+        </view>
+        <!-- 用户头像 -->
+        <view class="avatar user-avatar">
+          <image 
+            wx:if="{{userInfo && userInfo.avatarUrl}}"
+            src="{{userInfo.avatarUrl}}" 
+            class="avatar-img"
+          ></image>
+          <text wx:else class="avatar-text">👤</text>
+        </view>
+      </view>
+
+      <!-- AI回复 - 头像在左边 -->
+      <view class="message-item assistant" wx:if="{{item.role === 'assistant'}}">
+        <view class="avatar ai-avatar">🤖</view>
+        <view class="message-content">
+          <view class="message-bubble ai-bubble">
+            <text>{{item.content}}</text>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <!-- 加载中 -->
+    <view class="message-item assistant" wx:if="{{loading}}">
+      <view class="avatar ai-avatar">🤖</view>
+      <view class="message-content">
+        <view class="message-bubble loading-bubble">
+          <view class="loading-dots">
+            <text>.</text><text>.</text><text>.</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <!-- 输入区域 -->
+  <view class="input-area">
+    <view class="input-wrapper">
+      <input 
+        class="message-input"
+        type="text"
+        placeholder="输入你的问题..."
+        value="{{inputMessage}}"
+        bindinput="onInputChange"
+        confirm-type="send"
+        bindconfirm="sendMessage"
+      />
+    </view>
+    <view class="input-actions">
+      <button class="action-btn" bindtap="goToHistory">历史</button>
+      <button class="action-btn" bindtap="newSession">新对话</button>
+    </view>
+  </view>
+
+</view>
